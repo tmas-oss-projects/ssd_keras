@@ -23,10 +23,12 @@ from keras.layers import Input, Lambda, Activation, Conv2D, MaxPooling2D, ZeroPa
 from keras.regularizers import l2
 import keras.backend as K
 
-from keras_layers.keras_layer_AnchorBoxes import AnchorBoxes
-from keras_layers.keras_layer_L2Normalization import L2Normalization
-from keras_layers.keras_layer_DecodeDetections import DecodeDetections
-from keras_layers.keras_layer_DecodeDetectionsFast import DecodeDetectionsFast
+import tensorflow as tf
+
+from ssd_keras.keras_layers.keras_layer_AnchorBoxes import AnchorBoxes
+from ssd_keras.keras_layers.keras_layer_L2Normalization import L2Normalization
+from ssd_keras.keras_layers.keras_layer_DecodeDetections import DecodeDetections
+from ssd_keras.keras_layers.keras_layer_DecodeDetectionsFast import DecodeDetectionsFast
 
 def ssd_300(image_size,
             n_classes,
@@ -416,7 +418,7 @@ def ssd_300(image_size,
 
     # Concatenate the class and box predictions and the anchors to one large predictions vector
     # Output shape of `predictions`: (batch, n_boxes_total, n_classes + 4 + 8)
-    predictions = Concatenate(axis=2, name='predictions')([mbox_conf_softmax, mbox_loc, mbox_priorbox])
+    predictions =  Concatenate(axis=2, name='predictions')([mbox_conf_softmax, mbox_loc, mbox_priorbox])
 
     if mode == 'training':
         model = Model(inputs=x, outputs=predictions)
